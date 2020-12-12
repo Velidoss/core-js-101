@@ -97,7 +97,7 @@ function getFirstChar(value) {
  *   '\tHello, World! ' => 'Hello, World!'
  */
 function removeLeadingAndTrailingWhitespaces(value) {
-  return value.trim()
+  return value.trim();
 }
 
 /**
@@ -111,12 +111,12 @@ function removeLeadingAndTrailingWhitespaces(value) {
  *   'A', 5  => 'AAAAA'
  *   'cat', 3 => 'catcatcat'
  */
-function repeatString( value, count ) {
-  let res='';
-  for(let i=0; i< count; i++){
-    res +=value;
+function repeatString(value, count) {
+  let res = '';
+  for (let i = 0; i < count; i += 1) {
+    res += value;
   }
-  return res
+  return res;
 }
 
 /**
@@ -131,8 +131,8 @@ function repeatString( value, count ) {
  *   'I like legends', 'end' => 'I like legs',
  *   'ABABAB','BA' => 'ABAB'
  */
-function removeFirstOccurrences( str, value ) {
-  return str.slice(0, str.indexOf(value))+ str.slice(str.indexOf(value)+value.length);
+function removeFirstOccurrences(str, value) {
+  return str.slice(0, str.indexOf(value)) + str.slice(str.indexOf(value) + value.length);
 }
 
 /**
@@ -146,8 +146,8 @@ function removeFirstOccurrences( str, value ) {
  *   '<span>' => 'span'
  *   '<a>' => 'a'
  */
-function unbracketTag( str ) {
-  return str.slice(1, str.length-1)
+function unbracketTag(str) {
+  return str.slice(1, str.length - 1);
 }
 
 
@@ -181,7 +181,7 @@ function convertToUpperCase(str) {
  *   'info@gmail.com' => ['info@gmail.com']
  */
 function extractEmails(str) {
-  return str.split(';')
+  return str.split(';');
 }
 
 /**
@@ -207,7 +207,7 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString( width, height ) {
+function getRectangleString(width, height) {
   const topLeftCorner = '┌';
   const topRightCorner = '┐';
   const botLeftCorner = '└';
@@ -215,35 +215,35 @@ function getRectangleString( width, height ) {
   const horizontalLine = '─';
   const verticalLine = '│';
   let rectangle = '';
-  for(let i=0; i< height; i+=1) {
+  for (let i = 0; i < height; i += 1) {
     let line = '';
-    if(i===0) {
-      for( let j=0; j < width; j+=1) {
-        if(j===0) {
+    if (i === 0) {
+      for (let j = 0; j < width; j += 1) {
+        if (j === 0) {
           line += topLeftCorner;
-        } else if( j===width-1){
+        } else if (j === width - 1) {
           line += `${topRightCorner}\n`;
-        } else{
+        } else {
           line += horizontalLine;
         }
       }
-    }else if(i=== height-1) {
-      for( let j=0; j < width; j+=1) {
-        if(j===0) {
+    } else if (i === height - 1) {
+      for (let j = 0; j < width; j += 1) {
+        if (j === 0) {
           line += botLeftCorner;
-        } else if( j===width-1){
+        } else if (j === width - 1) {
           line += `${botRightCorner}\n`;
-        } else{
+        } else {
           line += horizontalLine;
         }
       }
     } else {
-      for( let j=0; j < width; j+=1) {
-        if(j===0) {
+      for (let j = 0; j < width; j += 1) {
+        if (j === 0) {
           line += verticalLine;
-        } else if( j===width-1){
+        } else if (j === width - 1) {
           line += `${verticalLine}\n`;
-        } else{
+        } else {
           line += ' ';
         }
       }
@@ -275,28 +275,31 @@ function encodeToRot13(str) {
   const secondHalf = 'nopqrstuvwxyz';
   const firstHalfUpper = 'ABCDEFGHIJKLM';
   const secondHalfUpper = 'NOPQRSTUVWXYZ';
-
-  return str.split('').reduce((acc, letter)=>{
-    if(firstHalf.includes(letter)) {
+  return str.split('').reduce((acc, letter) => {
+    if (firstHalf.includes(letter)) {
+      let res = acc;
       const index = firstHalf.indexOf(letter);
-      acc += secondHalf[index];
-      return acc;
-    } else if(secondHalf.includes(letter)) {
+      res += secondHalf[index];
+      return res;
+    } if (secondHalf.includes(letter)) {
+      let res = acc;
       const index = secondHalf.indexOf(letter);
-      acc += firstHalf[index];
-      return acc;
-    }else if(firstHalfUpper.includes(letter)) {
+      res += firstHalf[index];
+      return res;
+    } if (firstHalfUpper.includes(letter)) {
+      let res = acc;
       const index = firstHalfUpper.indexOf(letter);
-      acc += secondHalfUpper[index];
-      return acc;
-    }else if(secondHalfUpper.includes(letter)) {
+      res += secondHalfUpper[index];
+      return res;
+    } if (secondHalfUpper.includes(letter)) {
+      let res = acc;
       const index = secondHalfUpper.indexOf(letter);
-      acc += firstHalfUpper[index];
-      return acc;
-    } else{
-      acc += letter;
-      return acc;
+      res += firstHalfUpper[index];
+      return res;
     }
+    let res = acc;
+    res += letter;
+    return res;
   }, '');
 }
 
@@ -314,7 +317,7 @@ function encodeToRot13(str) {
  *   isString(new String('test')) => true
  */
 function isString(value) {
-  return  typeof value === 'string' || value instanceof String;
+  return typeof value === 'string' || value instanceof String;
 }
 
 
@@ -343,10 +346,10 @@ function isString(value) {
  *   'K♠' => 51
  */
 function getCardId(value) {
-  const deck = [ 'A♣','2♣','3♣','4♣','5♣','6♣','7♣','8♣','9♣','10♣','J♣','Q♣','K♣',
-    'A♦','2♦','3♦','4♦','5♦','6♦','7♦','8♦','9♦','10♦','J♦','Q♦','K♦',
-  'A♥','2♥','3♥','4♥','5♥','6♥','7♥','8♥','9♥','10♥','J♥','Q♥','K♥',
-  'A♠','2♠','3♠','4♠','5♠','6♠','7♠','8♠','9♠','10♠','J♠','Q♠','K♠'];
+  const deck = ['A♣', '2♣', '3♣', '4♣', '5♣', '6♣', '7♣', '8♣', '9♣', '10♣', 'J♣', 'Q♣', 'K♣',
+    'A♦', '2♦', '3♦', '4♦', '5♦', '6♦', '7♦', '8♦', '9♦', '10♦', 'J♦', 'Q♦', 'K♦',
+    'A♥', '2♥', '3♥', '4♥', '5♥', '6♥', '7♥', '8♥', '9♥', '10♥', 'J♥', 'Q♥', 'K♥',
+    'A♠', '2♠', '3♠', '4♠', '5♠', '6♠', '7♠', '8♠', '9♠', '10♠', 'J♠', 'Q♠', 'K♠'];
   return deck.indexOf(value);
 }
 
