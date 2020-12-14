@@ -181,12 +181,19 @@ function isInsideCircle(circle, point) {
  *   'entente' => null
  */
 function findFirstSingleChar(str) {
-  const result = [];
+  let unique = '';
+  const checked = [];
   for (let i = 0; i < str.length; i += 1) {
-    if (!result.includes(str[i])) result.push(str[i]);
-    else result.splice(result.indexOf(str[i]), 1);
+    if (!checked.includes(str[i])) {
+      checked.push(str[i]);
+      if (unique === '') {
+        unique = str[i];
+      }
+    } else if (unique === str[i]) {
+      unique = '';
+    }
   }
-  return result[0];
+  return unique || null;
 }
 
 
@@ -212,8 +219,8 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  return `${isStartIncluded ? '[' : '('}${a < b ? `${a.toString()}, ${b.toString()}` : `${b.toString()}, ${a.toString()}`}${isEndIncluded ? ']' : ')'}`;
 }
 
 
@@ -229,8 +236,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -246,8 +253,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return parseInt(num.toString().split('').reverse().join(''), 10);
 }
 
 
@@ -271,8 +278,22 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const ccnToIter = ccn.toString();
+  let sum = 0;
+  for (let i = 0; i < ccnToIter.length; i += 1) {
+    const num = parseInt(ccnToIter[i], 10);
+    if ((ccnToIter.length - i) % 2 === 0) {
+      if (num * 2 > 9) {
+        sum += (num * 2) - 9;
+      } else {
+        sum += num * 2;
+      }
+    } else {
+      sum += num;
+    }
+  }
+  return sum % 10 === 0;
 }
 
 /**
@@ -289,8 +310,9 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const sum = num.toString().split('').map((el) => parseInt(el, 10)).reduce((el, nextElem) => el + nextElem);
+  return sum > 9 ? getDigitalRoot(sum) : sum;
 }
 
 
@@ -315,8 +337,20 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const openingBrakets = ['[', '(', '{', '<'];
+  const closingBrakets = [']', ')', '}', '>'];
+  const openBracketsChecked = [];
+  if (str.length % 2 !== 0) return false;
+  for (let i = 0; i < str.length; i += 1) {
+    if (openingBrakets.includes(str[i])) {
+      openBracketsChecked.push(str[i]);
+    } else if (closingBrakets.findIndex((el) => el === str[i]) === openingBrakets
+      .findIndex((el) => el === openBracketsChecked[openBracketsChecked.length - 1])) {
+      openBracketsChecked.pop();
+    }
+  }
+  return openBracketsChecked.length === 0;
 }
 
 
@@ -340,8 +374,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -357,8 +391,30 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const arrToprocess = pathes
+    .map((path) => path.split('/'))
+    .sort((a, b) => a.length - b.length);
+  const commonPath = [...arrToprocess[0]];
+  const answer = [];
+  let continueToCheck = true;
+  for (let i = 1; i < arrToprocess.length; i += 1) {
+    for (let j = 0; j < commonPath.length; j += 1) {
+      if (continueToCheck) {
+        if (arrToprocess[i][j] !== commonPath[j]) {
+          continueToCheck = false;
+        } else {
+          answer.push(
+            `${answer[answer.length - 1] === '/' ? '' : '/'}${commonPath[j]}`,
+          );
+        }
+      }
+    }
+  }
+  if (answer.join('') === '' || answer.join('') === '/') return answer.join('');
+  if (answer.length < commonPath.length) return `${answer.join('')}/`;
+
+  return answer.join('');
 }
 
 
